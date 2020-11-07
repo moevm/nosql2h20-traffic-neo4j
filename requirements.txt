@@ -1,0 +1,26 @@
+# Flask
+flask==1.1.2
+
+# Forms
+wtforms==2.2.1
+Flask-WTF==0.14.3
+
+# CORS
+Flask-Cors==3.0.8
+
+# Restful
+Flask-RESTful==0.3.8
+
+# Design
+flask-bootstrap==3.3.7.1
+
+# Environment variable parsing
+flask_script
+environs==8.0.0
+
+# Deployment
+gevent==1.4.0
+gunicorn>=19.9.0
+
+#Other
+flask-swagger-ui==3.25.0
