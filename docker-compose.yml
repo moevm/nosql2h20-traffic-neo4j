@@ -1,0 +1,21 @@
+version: '3.2'
+
+services:
+  neo4j:
+    image: neo4j:4.0.3
+    hostname: neo4j
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./data:/data
+    restart: always
+
+  web_app:
+    build: .
+    depends_on:
+      - neo4j
+    ports:
+    - 5000:5000
+    restart: always
