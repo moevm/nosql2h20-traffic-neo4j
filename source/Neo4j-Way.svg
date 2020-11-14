@@ -1,1 +1,28 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" width="179.00637817382812" height="58.552879333496094" viewBox="-105.13558959960938 71.23920440673828 179.00637817382812 58.552879333496094"><title>Neo4j Graph Visualization</title><desc>Created using Neo4j (http://www.neo4j.com/)</desc><g class="layer relationships"><g class="relationship" transform="translate(-76.13558959960938 100.79209099946715) rotate(359.7382132841834)"><path class="outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 46.15226072438819 0.5 L 46.15226072438819 -0.5 L 25 -0.5 Z M 67.85538572438819 0.5 L 89.00764644877638 0.5 L 89.00764644877638 3.5 L 96.00764644877638 0 L 89.00764644877638 -3.5 L 89.00764644877638 -0.5 L 67.85538572438819 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="57.00382322438819" y="3" font-family="sans-serif">Way</text></g></g><g class="layer nodes"><g class="node" transform="translate(-76.13558959960938,100.79209099946715)"><circle class="outline" cx="0" cy="0" r="25" fill="#FFC454" stroke="#d7a013" stroke-width="2px"/><text text-anchor="middle" pointer-events="none" font-family="sans-serif" dy="1.5625" font-size="25" fill="#2A2C34"/><text text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="sans-serif"> </text></g><g class="node" transform="translate(44.870793765824374,100.23920413062316)"><circle class="outline" cx="0" cy="0" r="25" fill="#FFC454" stroke="#d7a013" stroke-width="2px"/><text text-anchor="middle" pointer-events="none" font-family="sans-serif" dy="1.5625" font-size="25" fill="#2A2C34"/><text text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="sans-serif"> </text></g></g></svg>
+<?xml version="1.0"?>
+<svg width="179.00637817382812" height="58.552879333496094" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <title>Neo4j Graph Visualization</title>
+ <desc>Created using Neo4j (http://www.neo4j.com/)</desc>
+ <g class="layer">
+  <title>Layer 1</title>
+  <g class="layer relationships" id="svg_1">
+   <g class="relationship" id="svg_2" transform="rotate(359.738 104.685 -71.9223) translate(-76.1356 100.792)">
+    <path class="outline" d="m129.672787,-71.414139l21.152261,0l0,-1l-21.152261,0l0,1zm42.855386,0l21.15226,0l0,3l7,-3.5l-7,-3.5l0,3l-21.15226,0l0,1z" fill="#A5ABB6" id="svg_3"/>
+    <text fill="#000000" font-family="sans-serif" font-size="8px" id="svg_4" text-anchor="middle" x="161.67661" y="-68.914139">Way</text>
+   </g>
+  </g>
+  <g class="layer nodes" id="svg_5">
+   <g class="node" id="svg_6" transform="translate(-76.1356 100.792)">
+    <circle class="outline" cx="105.13559" cy="-71.239204" fill="#FFC454" id="svg_7" r="25" stroke="#d7a013" stroke-width="2px"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="25" id="svg_8" text-anchor="middle" x="105.13559" y="-71.239204"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="10px" id="svg_9" text-anchor="middle" x="105.13559" y="-66.239204"/>
+   </g>
+   <g class="node" id="svg_10">
+    <circle class="outline" cx="150.006382" cy="29" fill="#FFC454" id="svg_11" r="25" stroke="#d7a013" stroke-width="2px"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="25" id="svg_12" text-anchor="middle" x="150.006382" y="29"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="10px" id="svg_13" text-anchor="middle" x="150.006382" y="34"/>
+   </g>
+   <text fill="#000000" font-family="Sans-serif" font-size="10" id="svg_15" stroke="#000000" stroke-width="0" text-anchor="middle" x="150.193193" xml:space="preserve" y="32.526703">WayNode</text>
+   <text fill="#000000" font-family="Sans-serif" font-size="10" id="svg_16" stroke="#000000" stroke-width="0" text-anchor="middle" x="29.243234" xml:space="preserve" y="32.69431">WayNode</text>
+  </g>
+ </g>
+</svg>
