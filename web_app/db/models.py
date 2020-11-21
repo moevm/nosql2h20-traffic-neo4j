@@ -13,16 +13,12 @@ class WayNode(StructuredNode):
     @classmethod
     def match(cls, lat=0.0, lon=0.0):
         query = f'''
-            match (n:{cls.__name__})
-            where {lat-0.002} <= n.lat and n.lat <= {lat+0.002} and
+            MATCH (n:{cls.__name__})
+            WHERE {lat-0.002} <= n.lat and n.lat <= {lat+0.002} AND
 	              {lon-0.002} <= n.lon and n.lon <= {lon+0.002}
-            with collect(n) as w_nodes
-            unwind w_nodes as w_node
-            with point({{longitude: w_node.lon, latitude: w_node.lat}}) as p1,
-                 point({{longitude: {lon}, latitude: {lat}}}) as p2,
-                 w_nodes
-            with collect(distance(p1, p2)) as dists, min(distance(p1, p2)) as min_dist, w_nodes
-            return w_nodes[[i in range(0, size(dists)-1) where dists[i] = min_dist][0]]
+            WITH n, distance(point({{longitude:n.lon,latitude:n.lat}}), point({{latitude: 59.8644123, longitude: 30.3490114}})) as dist
+            ORDER BY dist ASC
+            RETURN n limit 1
         '''
 
         results, _ = db.cypher_query(query=query)
@@ -31,9 +27,9 @@ class WayNode(StructuredNode):
     @classmethod
     def kShortestPaths(cls, id0, id1, k=1):
         query = f'''
-            match (s:{cls.__name__} {{id: {id0}}}),
+            MATCH (s:{cls.__name__} {{id: {id0}}}),
                   (f:{cls.__name__} {{id: {id1}}})
-            call gds.alpha.kShortestPaths.stream( {{
+            CALL gds.alpha.kShortestPaths.stream( {{
                 startNode: s,
                 endNode: f,
                 k: {k},
@@ -47,8 +43,8 @@ class WayNode(StructuredNode):
                     }}
                 }}
             }})
-            yield nodeIds, costs
-            return [node in gds.util.asNodes(nodeIds) | node] AS nodes,
+            YIELD nodeIds, costs
+            RETURN gds.util.asNodes(nodeIds) AS nodes,
                    reduce(acc = 0.0, cost in costs | acc + cost) AS distance
         '''
         results, _ = db.cypher_query(query=query)

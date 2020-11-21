@@ -7,7 +7,7 @@ app = create_app()
 app.app_context().push()
 
 manager = Manager(app)
-connect.connect(url='bolt://neo4j:testpass@localhost:7687')
+connect.connect(url='bolt://neo4j:testpass@localhost:11003')
 
 
 if __name__ == "__main__":
