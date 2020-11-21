@@ -11,4 +11,4 @@ class AnalyticsApi(Resource):
             response(flask.Response): json with analytics
         """
         # bla bla bla
-        return jsonify({"info": "bla bla bla"})
+        return jsonify({'a': 'a'})

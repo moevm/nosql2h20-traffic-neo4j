@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<svg width="58" height="58" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <title>Neo4j Graph Visualization</title>
+ <desc>Created using Neo4j (http://www.neo4j.com/)</desc>
+ <g class="layer">
+  <title>Layer 1</title>
+  <g class="layer relationships" id="svg_1"/>
+  <g class="layer nodes" id="svg_2">
+   <g class="node" id="svg_3" transform="translate(100 100)">
+    <circle class="outline" cx="-71" cy="-71.000008" fill="#D9C8AE" id="svg_4" r="25" stroke="#c0a378" stroke-width="2px"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="25" id="svg_5" text-anchor="middle" x="-71" y="-71.000008"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="10px" id="svg_6" text-anchor="middle" x="-71" y="-66.000008"/>
+   </g>
+  </g>
+  <text fill="#000000" font-family="Sans-serif" font-size="10" id="svg_7" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" text-anchor="middle" x="28.992821" xml:space="preserve" y="32.511746">Building</text>
+ </g>
+</svg>

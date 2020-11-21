@@ -73,4 +73,3 @@ def configure_logger(app):
         app.logger.setLevel(logging.DEBUG)
     if not app.logger.handlers:
         app.logger.addHandler(stream_handler)
-

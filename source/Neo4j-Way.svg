@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<svg width="179.00637817382812" height="58.552879333496094" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <title>Neo4j Graph Visualization</title>
+ <desc>Created using Neo4j (http://www.neo4j.com/)</desc>
+ <g class="layer">
+  <title>Layer 1</title>
+  <g class="layer relationships" id="svg_1">
+   <g class="relationship" id="svg_2" transform="rotate(359.738 104.685 -71.9223) translate(-76.1356 100.792)">
+    <path class="outline" d="m129.672787,-71.414139l21.152261,0l0,-1l-21.152261,0l0,1zm42.855386,0l21.15226,0l0,3l7,-3.5l-7,-3.5l0,3l-21.15226,0l0,1z" fill="#A5ABB6" id="svg_3"/>
+    <text fill="#000000" font-family="sans-serif" font-size="8px" id="svg_4" text-anchor="middle" x="161.67661" y="-68.914139">Way</text>
+   </g>
+  </g>
+  <g class="layer nodes" id="svg_5">
+   <g class="node" id="svg_6" transform="translate(-76.1356 100.792)">
+    <circle class="outline" cx="105.13559" cy="-71.239204" fill="#FFC454" id="svg_7" r="25" stroke="#d7a013" stroke-width="2px"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="25" id="svg_8" text-anchor="middle" x="105.13559" y="-71.239204"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="10px" id="svg_9" text-anchor="middle" x="105.13559" y="-66.239204"/>
+   </g>
+   <g class="node" id="svg_10">
+    <circle class="outline" cx="150.006382" cy="29" fill="#FFC454" id="svg_11" r="25" stroke="#d7a013" stroke-width="2px"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="25" id="svg_12" text-anchor="middle" x="150.006382" y="29"/>
+    <text fill="#2A2C34" font-family="sans-serif" font-size="10px" id="svg_13" text-anchor="middle" x="150.006382" y="34"/>
+   </g>
+   <text fill="#000000" font-family="Sans-serif" font-size="10" id="svg_15" stroke="#000000" stroke-width="0" text-anchor="middle" x="150.193193" xml:space="preserve" y="32.526703">WayNode</text>
+   <text fill="#000000" font-family="Sans-serif" font-size="10" id="svg_16" stroke="#000000" stroke-width="0" text-anchor="middle" x="29.243234" xml:space="preserve" y="32.69431">WayNode</text>
+  </g>
+ </g>
+</svg>

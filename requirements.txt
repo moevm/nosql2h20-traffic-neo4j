@@ -24,3 +24,4 @@ gunicorn>=19.9.0
 
 #Other
 flask-swagger-ui==3.25.0
+neomodel==4.0.1
