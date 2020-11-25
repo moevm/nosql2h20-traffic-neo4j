@@ -2,11 +2,13 @@ version: '3.2'
 
 services:
   neo4j:
-    image: neo4j:4.0.3
-    hostname: neo4j
+    image: neo4j:latest
     container_name: neo4j
     environment:
       - NEO4J_AUTH=none
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*,gds.*
+      - NEO4J_dbms_security_procedures_whitelist=apoc.*,gds.*
+      - NEO4JLABS_PLUGINS=["apoc", "graph-data-science"]
     ports:
       - "7474:7474"
       - "7687:7687"
@@ -17,6 +19,8 @@ services:
   web_app:
     build: .
     depends_on:
+      - neo4j
+    links:
       - neo4j
     ports:
     - 5000:5000
