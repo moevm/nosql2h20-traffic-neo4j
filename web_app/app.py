@@ -8,7 +8,7 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template, request
 from web_app.api import api_bp
 
-from web_app.extensions import csrf_protect
+from web_app.extensions import csrf_protect, cors
 
 
 def create_app(config_object="web_app.settings"):
@@ -31,6 +31,7 @@ def create_app(config_object="web_app.settings"):
 def register_extensions(app):
     """Register Flask extensions."""
     csrf_protect.init_app(app)
+    cors.init_app(app)
 
 
 def register_blueprints(app):
