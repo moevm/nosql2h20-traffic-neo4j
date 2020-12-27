@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 import logging
+import os
 import sys
-from pathlib import Path
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
 from flask import Flask, render_template, request
-from web_app.api import api_bp
 
-from web_app.extensions import csrf_protect, cors
+from web_app.api import api_bp
+from web_app.extensions import cors, csrf_protect
+from web_app.traffic.views import traffic_bp
 
 
 def create_app(config_object="web_app.settings"):
@@ -21,6 +23,7 @@ def create_app(config_object="web_app.settings"):
     """
     app = Flask(__name__.split(".")[0])
     app.config.from_object(config_object)
+    app.config['SECRET_KEY'] = os.urandom(32)
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
@@ -37,6 +40,7 @@ def register_extensions(app):
 def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(api_bp)
+    app.register_blueprint(traffic_bp)
 
 
 def register_errorhandlers(app):

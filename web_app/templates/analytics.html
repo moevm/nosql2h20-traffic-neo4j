@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block script %}
+<script src="https://www.google.com/jsapi"></script>
+<script>
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+        const data = google.visualization.arrayToDataTable([
+            ["уровень пробок", "количество участков", { role: "style" }],
+            {% for row in data %}
+            {{ row|safe }},
+            {% endfor %}
+        ], false);
+        const options = {
+            hAxis: {title: "уровень пробок"},
+            vAxis: {title: "количество участков"},
+            legend: { position: "none" }
+        };
+        const chart = new google.visualization.ColumnChart(document.getElementById("diagram"));
+        chart.draw(data, options);
+    }
+</script>
+{% endblock %}
+{% block content %}
+<div class="col-ld-2 ml-5 mr-4 mt-auto mb-auto">
+    <form method="POST" action="">
+        <div class="form-group row text-center">
+            <div class="col-ld-2 mr-2">
+                <label>first corner</label>
+                <div class="form-group">
+                {% if form.lat0.errors %}
+                    {{ form.lat0(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.lat0.errors %}
+                            <span>{{ error }}</span>
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.lat0(class="form-control", placeholder="lat") }}
+                {% endif %}
+                </div>
+                <div class="form-group">
+                {% if form.lon0.errors %}
+                    {{ form.lon0(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.lon0.errors %}
+                            <span>{{ error }}</span>
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.lon0(class="form-control", placeholder="lon") }}
+                {% endif %}
+                </div>
+            </div>
+            <div class="col-ld-2">
+                <label>second corner</label>
+                <div class="form-group">
+                {% if form.lat1.errors %}
+                    {{ form.lat1(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.lat1.errors %}
+                            <span>{{ error }}</span>
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.lat1(class="form-control", placeholder="lat") }}
+                {% endif %}
+                </div>
+                <div class="form-group">
+                {% if form.lon1.errors %}
+                    {{ form.lon1(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.lon1.errors %}
+                            <span>{{ error }}</span>
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.lon1(class="form-control", placeholder="lon") }}
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                {{ form.date(class="form-control") }}
+                {{ form.filter(class="btn btn-primary btn-block") }}
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col-ld-2 ml-4 mr-4 border border-primary">
+    <div id="diagram" style="width: 1000px; height: 650px;"></div>
+</div>
+<div class="col-ld-2 ml-4 mr-4">
+
+</div>
+{% endblock %}
