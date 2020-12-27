@@ -1,4 +1,4 @@
-from flask import Response, current_app, jsonify, make_response
+from flask import Response, current_app, jsonify, make_response, request
 from flask_restful import Resource
 
 from web_app.db.models import WayNode
@@ -17,10 +17,14 @@ class MapsApi(Resource):
             the most comfortable path
         """
         try:
-            start_building = find_by_address(street='Торжковская улица', number='15')
+            start_street = request.get_json()["start_street"]
+            start_number = request.get_json()["start_number"]
+            end_street = request.get_json()["end_street"]
+            end_number = request.get_json()["end_number"]
+            start_building = find_by_address(street=start_street, number=start_number)
             start_node = WayNode.match(lat=start_building.lat, lon=start_building.lon)
 
-            finish_building = find_by_address(street='Кантемировская улица', number='25')
+            finish_building = find_by_address(street=end_street, number=end_number)
             finish_node = WayNode.match(lat=finish_building.lat, lon=finish_building.lon)
 
             paths, distances = WayNode.kShortestPaths(id0=start_node.id, id1=finish_node.id)
