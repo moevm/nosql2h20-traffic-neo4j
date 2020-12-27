@@ -5,10 +5,16 @@ from wtforms.validators import Length, NumberRange
 
 
 class NavigatorForm(FlaskForm):
-    start = StringField(
+    start_street = StringField(
         "start", validators=[Length(min=1, max=50, message="field cannot be empty")]
     )
-    finish = StringField(
+    finish_street = StringField(
+        "finish", validators=[Length(min=1, max=50, message="field cannot be empty")]
+    )
+    start_number = StringField(
+        "start", validators=[Length(min=1, max=50, message="field cannot be empty")]
+    )
+    finish_number = StringField(
         "finish", validators=[Length(min=1, max=50, message="field cannot be empty")]
     )
     go = SubmitField("go")
@@ -16,7 +22,7 @@ class NavigatorForm(FlaskForm):
 
 class DataFilterForm(FlaskForm):
     label = SelectField(
-        "label", choices=[("Bulding", "Bulding"), ("WayNode", "WayNode"), ("Way", "Way")]
+        "label", choices=[("Building", "Building"), ("WayNode", "WayNode"), ("Way", "Way")]
     )
     lat0 = FloatField(
         "lat0",

@@ -4,27 +4,51 @@
     <form method="POST" action="">
         <fieldset class="form-group">
             <div class="form-group">
-                {% if form.start.errors %}
-                    {{ form.start(class="form-control form-control-lg is-invalid") }}
+                {% if form.start_street.errors %}
+                    {{ form.start_street(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
-                        {% for error in form.start.errors %}
+                        {% for error in form.start_street.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.start(class="form-control form-control-lg") }}
+                    {{ form.start_street(class="form-control form-control-lg", placeholder="start street") }}
                 {% endif %}
             </div>
             <div class="form-group">
-                {% if form.finish.errors %}
-                    {{ form.finish(class="form-control form-control-lg is-invalid") }}
+                {% if form.start_number.errors %}
+                    {{ form.start_number(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
-                        {% for error in form.finish.errors %}
+                        {% for error in form.start_number.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.finish(class="form-control form-control-lg") }}
+                    {{ form.start_number(class="form-control form-control-lg", placeholder="start housenumber") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {% if form.finish_street.errors %}
+                    {{ form.finish_street(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.finish_street.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.finish_street(class="form-control form-control-lg", placeholder="finish street") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {% if form.finish_number.errors %}
+                    {{ form.finish_number(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.finish_number.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.finish_number(class="form-control form-control-lg", placeholder="finish housenumber") }}
                 {% endif %}
             </div>
         </fieldset>

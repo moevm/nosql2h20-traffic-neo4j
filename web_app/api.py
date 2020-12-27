@@ -9,5 +9,6 @@ api_bp = Blueprint("api", __name__, url_prefix="/api")
 
 api = Api(api_bp, decorators=[csrf_protect.exempt])
 
-api.add_resource(AnalyticsApi, "/analytics")
+api.add_resource(AnalyticsApi, "/info")
 api.add_resource(MapsApi, "/map")
+
