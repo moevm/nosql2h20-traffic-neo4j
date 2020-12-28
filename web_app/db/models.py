@@ -1,3 +1,5 @@
+import re
+
 from neomodel import FloatProperty
 from neomodel import IntegerProperty
 from neomodel import StringProperty, StructuredRel
@@ -104,8 +106,11 @@ class Building(StructuredNode):
                 '''
 
         results, _ = db.cypher_query(query=query)
-        print(results)
-        return Building.inflate(results[0][0])
+        if not results:
+            num = str([int(i) for i in re.findall(r'\d+', number)][0] + 1)
+            return Building.find_by_adress(street, num)
+        else:
+            return Building.inflate(results[0][0])
 
     def __repr__(self):
         return str(self)

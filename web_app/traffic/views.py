@@ -112,7 +112,7 @@ def analytics():
         ["3", 0, "color: red"],
     ]
     form = AnalyticsFilterForm()
-    if request.method == "POST":
+    if request.method == "POST" and form.validate():
         date = form.date._value()
         np.random.seed(np.mod(hash(date), 10**9))
 
