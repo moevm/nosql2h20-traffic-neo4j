@@ -12,5 +12,5 @@
     <li>docker-compose build</li>  
     <li>docker-compose up</li>
   </ul>
-  <p>5. перейти на <a href="localhost:5000">localhost:5000</a></p>
+  <p>5. перейти на <a href="http://localhost:5000">localhost:5000</a></p>
 </p>
