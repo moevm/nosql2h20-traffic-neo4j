@@ -1,18 +1,13 @@
-
-
 from datetime import datetime
-from functools import reduce
 
 import folium
 import numpy as np
-from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
-from folium import LatLngPopup
+from flask import Blueprint, flash, render_template, request
 from neomodel import Q
 
-from web_app.db.models import Building
-from web_app.db.models import Way
-from web_app.db.models import WayNode
+from web_app.db.models import Building, Way, WayNode
 from web_app.extensions import csrf_protect
+
 from .forms import AnalyticsFilterForm, DataFilterForm, NavigatorForm
 
 traffic_bp = Blueprint("traffic", __name__)
@@ -29,13 +24,23 @@ def data():
         lat = sorted([form.lat0.data, form.lat1.data])
         lon = sorted([form.lon0.data, form.lon1.data])
 
-        if label == 'Building':
+        if label == "Building":
             theads = Building.properties()
-            nodes = Building.nodes.filter(Q(lat__gte=lat[0]), Q(lat__lte=lat[1]), Q(lon__gte=lon[0]), Q(lon__lte=lon[1]))
+            nodes = Building.nodes.filter(
+                Q(lat__gte=lat[0]),
+                Q(lat__lte=lat[1]),
+                Q(lon__gte=lon[0]),
+                Q(lon__lte=lon[1]),
+            )
             rows = [list(node.__dict__.values()) for node in nodes]
-        elif label == 'WayNode':
+        elif label == "WayNode":
             theads = WayNode.properties()
-            nodes = WayNode.nodes.filter(Q(lat__gte=lat[0]), Q(lat__lte=lat[1]), Q(lon__gte=lon[0]), Q(lon__lte=lon[1]))
+            nodes = WayNode.nodes.filter(
+                Q(lat__gte=lat[0]),
+                Q(lat__lte=lat[1]),
+                Q(lon__gte=lon[0]),
+                Q(lon__lte=lon[1]),
+            )
             rows = [list(node.__dict__.values()) for node in nodes]
         else:
             theads = Way.properties()
@@ -49,10 +54,10 @@ def data():
 @csrf_protect.exempt
 @traffic_bp.route("/", methods=["POST", "GET"])
 def index():
-    colors = {1: 'green', 2: 'yellow', 3: 'red'}
+    colors = {1: "green", 2: "yellow", 3: "red"}
     speeds = {1: 60, 2: 40, 3: 20}
-    date = datetime.now().strftime('%d.%m.%Y %H:%M')
-    np.random.seed(np.mod(hash(date), 10**9))
+    date = datetime.now().strftime("%d.%m.%Y %H:%M")
+    np.random.seed(np.mod(hash(date), 10 ** 9))
 
     folium_map = folium.Map(location=(59.9503, 30.3367), zoom_start=12)
 
@@ -63,19 +68,29 @@ def index():
         finish_street = form.finish_street.data
         finish_number = form.finish_number.data
 
-        start_street = start_street.lower().replace('ул.', 'улица').replace('пр-т', 'проспект')
-        finish_street = finish_street.lower().replace('ул.', 'улица').replace('пр-т', 'проспект')
+        start_street = (
+            start_street.lower().replace("ул.", "улица").replace("пр-т", "проспект")
+        )
+        finish_street = (
+            finish_street.lower().replace("ул.", "улица").replace("пр-т", "проспект")
+        )
         try:
-            start_building = Building.find_by_adress(street=start_street, number=start_number)
+            start_building = Building.find_by_adress(
+                street=start_street, number=start_number
+            )
             start_node = WayNode.match(lat=start_building.lat, lon=start_building.lon)
 
-            finish_building = Building.find_by_adress(street=finish_street, number=finish_number)
+            finish_building = Building.find_by_adress(
+                street=finish_street, number=finish_number
+            )
             finish_node = WayNode.match(lat=finish_building.lat, lon=finish_building.lon)
         except IndexError:
             flash("Error! Address or house number was not found.")
             return render_template("index.html", title="navigator", form=form)
-        k=5
-        paths, distances = WayNode.kShortestPaths(id0=start_node.id, id1=finish_node.id, k=k)
+        k = 5
+        paths, distances = WayNode.kShortestPaths(
+            id0=start_node.id, id1=finish_node.id, k=k
+        )
         L = np.max([len(distance) for distance in distances])
         part = np.random.randint(3, 10)
         heuristics = []
@@ -93,7 +108,10 @@ def index():
         levels = np.resize(levels, (k, L))
         locations = [(node.lat, node.lon) for node in paths[idx]]
         for i in range(L // part):
-            folium.PolyLine(locations=locations[part * i: part * (i+1)+1], color=colors[levels[idx][i * part]]).add_to(folium_map)
+            folium.PolyLine(
+                locations=locations[part * i : part * (i + 1) + 1],
+                color=colors[levels[idx][i * part]],
+            ).add_to(folium_map)
     folium_map.save("web_app/templates/map.html")
 
     return render_template("index.html", title="navigator", form=form)
@@ -116,15 +134,19 @@ def analytics():
     form = AnalyticsFilterForm()
     if request.method == "POST" and form.validate():
         date = form.date._value()
-        np.random.seed(np.mod(hash(date), 10**9))
+        np.random.seed(np.mod(hash(date), 10 ** 9))
 
         lat = sorted([form.lat0.data, form.lat1.data])
         lon = sorted([form.lon0.data, form.lon1.data])
-        nodes = WayNode.nodes.filter(Q(lat__gte=lat[0]), Q(lat__lte=lat[1]), Q(lon__gte=lon[0]), Q(lon__lte=lon[1]))
+        nodes = WayNode.nodes.filter(
+            Q(lat__gte=lat[0]), Q(lat__lte=lat[1]), Q(lon__gte=lon[0]), Q(lon__lte=lon[1])
+        )
 
         traffic_dist = []
         for idx in range(2):
-            traffic_dist.append(np.random.randint(1, len(nodes) - np.sum(traffic_dist) - 5 + idx))
+            traffic_dist.append(
+                np.random.randint(1, len(nodes) - np.sum(traffic_dist) - 5 + idx)
+            )
         traffic_dist.append(len(nodes) - 1 - np.sum(traffic_dist))
         traffic_data = [
             ["1", traffic_dist[0], "color: green"],
@@ -132,4 +154,6 @@ def analytics():
             ["3", traffic_dist[2], "color: red"],
         ]
 
-    return render_template("analytics.html", title="analytics", data=traffic_data, form=form)
+    return render_template(
+        "analytics.html", title="analytics", data=traffic_data, form=form
+    )
