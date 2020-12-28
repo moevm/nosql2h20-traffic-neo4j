@@ -71,7 +71,7 @@ class WayNode(StructuredNode):
             }})
             YIELD nodeIds, costs
             RETURN gds.util.asNodes(nodeIds) AS nodes,
-                   reduce(acc = 0.0, cost in costs | acc + cost) AS distance
+                   costs
         '''
         results, _ = db.cypher_query(query=query)
         return [[WayNode.inflate(node) for node in path[0]] for path in results],\
@@ -94,6 +94,17 @@ class Building(StructuredNode):
     @classmethod
     def properties(cls):
         return ['id', 'street', 'housenumber', 'lat', 'lon']
+
+    @classmethod
+    def find_by_adress(cls, street, number):
+        query = f'''
+                        MATCH (n:Building)
+                        WHERE toLower(n.street) CONTAINS '{street}' AND n.housenumber='{number}'
+                        RETURN n LIMIT 1
+                    '''
+
+        results, _ = db.cypher_query(query=query)
+        return Building.inflate(results[0][0])
 
     def __repr__(self):
         return str(self)

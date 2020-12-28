@@ -9,7 +9,6 @@ from neomodel import Q
 from web_app.db.models import Building
 from web_app.db.models import Way
 from web_app.db.models import WayNode
-from web_app.db.util import find_by_address
 from web_app.extensions import csrf_protect
 from .forms import AnalyticsFilterForm, DataFilterForm, NavigatorForm
 
@@ -47,9 +46,12 @@ def data():
 @csrf_protect.exempt
 @traffic_bp.route("/", methods=["POST", "GET"])
 def index():
+    street_types = ('улица', 'ул.', 'проспект', 'пр-т', 'переулок')
     colors = {1: 'green', 2: 'yellow', 3: 'red'}
-    date = datetime.now()
+    speeds = {1: 60, 2: 40, 3: 20}
+    date = datetime.now().strftime('%d.%m.%Y %H:%M')
     seed = np.mod(hash(date), 10**9)
+    print(seed)
     np.random.seed(np.mod(hash(date), 10**9))
 
     folium_map = folium.Map(location=(59.9503, 30.3367), zoom_start=12)
@@ -61,18 +63,44 @@ def index():
         finish_street = form.finish_street.data
         finish_number = form.finish_number.data
 
-        start_building = find_by_address(street=start_street, number=start_number)
+        start_street = start_street.lower().split(' ')
+        for street in start_street:
+            if street in street_types:
+                start_street.remove(street)
+        start_street = ' '.join(start_street)
+
+        finish_street = finish_street.lower().split(' ')
+        for street in finish_street:
+            if street in street_types:
+                finish_street.remove(street)
+        finish_street = ' '.join(finish_street)
+
+        start_building = Building.find_by_adress(street=start_street, number=start_number)
         start_node = WayNode.match(lat=start_building.lat, lon=start_building.lon)
 
-        finish_building = find_by_address(street=finish_street, number=finish_number)
+        finish_building = Building.find_by_adress(street=finish_street, number=finish_number)
         finish_node = WayNode.match(lat=finish_building.lat, lon=finish_building.lon)
 
-        paths, distances = WayNode.kShortestPaths(id0=start_node.id, id1=finish_node.id)
-
-        locations = [(node.lat, node.lon) for node in paths[0]]
+        k=5
+        paths, distances = WayNode.kShortestPaths(id0=start_node.id, id1=finish_node.id, k=k)
+        L = np.max([len(distance) for distance in distances])
         part = np.random.randint(3, 10)
-        for i in range(len(locations) // part):
-            folium.PolyLine(locations=locations[part * i: part * (i+1)+1], color=colors[np.random.randint(1, 4)]).add_to(folium_map)
+        heuristics = []
+        levels = np.random.randint(1, 4, size=(k, part))
+        for distance, level in zip(distances, levels):
+            heuristic = 0
+            for i, d in enumerate(distance):
+                heuristic += d / speeds[level[i // ((L // part) + 1)]]
+            heuristics.append(heuristic)
+        _, idx = min((val, idx) for (idx, val) in enumerate(heuristics))
+
+        L = len(distances[idx])
+        levels = levels[idx]
+        levels = np.repeat(levels, L // part, axis=0)
+        levels = np.resize(levels, (k, L))
+        locations = [(node.lat, node.lon) for node in paths[idx]]
+        for i in range(L // part):
+            folium.PolyLine(locations=locations[part * i: part * (i+1)+1], color=colors[levels[idx][i * part]]).add_to(folium_map)
 
     folium_map.save("web_app/templates/map.html")
 
