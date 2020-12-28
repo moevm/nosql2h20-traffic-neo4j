@@ -1,9 +1,12 @@
+
+
 from datetime import datetime
 from functools import reduce
 
 import folium
 import numpy as np
 from flask import Blueprint, render_template, request
+from folium import LatLngPopup
 from neomodel import Q
 
 from web_app.db.models import Building
@@ -21,7 +24,7 @@ def data():
     theads = []
     rows = []
     form = DataFilterForm()
-    if request.method == "POST":
+    if request.method == "POST" and form.validate():
         label = form.label.data
         lat = sorted([form.lat0.data, form.lat1.data])
         lon = sorted([form.lon0.data, form.lon1.data])
@@ -46,12 +49,9 @@ def data():
 @csrf_protect.exempt
 @traffic_bp.route("/", methods=["POST", "GET"])
 def index():
-    street_types = ('улица', 'ул.', 'проспект', 'пр-т', 'переулок')
     colors = {1: 'green', 2: 'yellow', 3: 'red'}
     speeds = {1: 60, 2: 40, 3: 20}
     date = datetime.now().strftime('%d.%m.%Y %H:%M')
-    seed = np.mod(hash(date), 10**9)
-    print(seed)
     np.random.seed(np.mod(hash(date), 10**9))
 
     folium_map = folium.Map(location=(59.9503, 30.3367), zoom_start=12)
@@ -63,17 +63,8 @@ def index():
         finish_street = form.finish_street.data
         finish_number = form.finish_number.data
 
-        start_street = start_street.lower().split(' ')
-        for street in start_street:
-            if street in street_types:
-                start_street.remove(street)
-        start_street = ' '.join(start_street)
-
-        finish_street = finish_street.lower().split(' ')
-        for street in finish_street:
-            if street in street_types:
-                finish_street.remove(street)
-        finish_street = ' '.join(finish_street)
+        start_street = start_street.lower().replace('ул.', 'улица').replace('пр-т', 'проспект')
+        finish_street = finish_street.lower().replace('ул.', 'улица').replace('пр-т', 'проспект')
 
         start_building = Building.find_by_adress(street=start_street, number=start_number)
         start_node = WayNode.match(lat=start_building.lat, lon=start_building.lon)
@@ -101,7 +92,6 @@ def index():
         locations = [(node.lat, node.lon) for node in paths[idx]]
         for i in range(L // part):
             folium.PolyLine(locations=locations[part * i: part * (i+1)+1], color=colors[levels[idx][i * part]]).add_to(folium_map)
-
     folium_map.save("web_app/templates/map.html")
 
     return render_template("index.html", title="navigator", form=form)
@@ -116,6 +106,11 @@ def map():
 @csrf_protect.exempt
 @traffic_bp.route("/analytics", methods=["POST", "GET"])
 def analytics():
+    traffic_data = [
+        ["1", 0, "color: green"],
+        ["2", 0, "color: yellow"],
+        ["3", 0, "color: red"],
+    ]
     form = AnalyticsFilterForm()
     if request.method == "POST":
         date = form.date._value()
@@ -124,18 +119,15 @@ def analytics():
         lat = sorted([form.lat0.data, form.lat1.data])
         lon = sorted([form.lon0.data, form.lon1.data])
         nodes = WayNode.nodes.filter(Q(lat__gte=lat[0]), Q(lat__lte=lat[1]), Q(lon__gte=lon[0]), Q(lon__lte=lon[1]))
-        sum = reduce(lambda a, x: a + x, [len(node.forward.all()) for node in nodes])
 
         traffic_dist = []
         for idx in range(2):
-            traffic_dist.append(np.random.randint(1, sum - np.sum(traffic_dist) - 4 + idx))
-        traffic_dist.append(sum - np.sum(traffic_dist))
+            traffic_dist.append(np.random.randint(1, len(nodes) - np.sum(traffic_dist) - 5 + idx))
+        traffic_dist.append(len(nodes) - 1 - np.sum(traffic_dist))
         traffic_data = [
             ["1", traffic_dist[0], "color: green"],
             ["2", traffic_dist[1], "color: yellow"],
             ["3", traffic_dist[2], "color: red"],
         ]
 
-    return render_template(
-        "analytics.html", title="analytics", data=traffic_data, form=form
-    )
+    return render_template("analytics.html", title="analytics", data=traffic_data, form=form)

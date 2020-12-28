@@ -98,12 +98,13 @@ class Building(StructuredNode):
     @classmethod
     def find_by_adress(cls, street, number):
         query = f'''
-                        MATCH (n:Building)
-                        WHERE toLower(n.street) CONTAINS '{street}' AND n.housenumber='{number}'
-                        RETURN n LIMIT 1
-                    '''
+                    MATCH (n:Building)
+                    WHERE toLower(n.street)='{street}' AND n.housenumber='{number}'
+                    RETURN n LIMIT 1
+                '''
 
         results, _ = db.cypher_query(query=query)
+        print(results)
         return Building.inflate(results[0][0])
 
     def __repr__(self):
