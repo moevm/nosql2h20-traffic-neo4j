@@ -9,7 +9,7 @@ from pathlib import Path
 from flask import Flask, render_template, request
 
 from web_app.api import api_bp
-from web_app.extensions import cors, csrf_protect
+from web_app.extensions import cors, csrf_protect, toastr
 from web_app.traffic.views import traffic_bp
 
 
@@ -35,6 +35,7 @@ def register_extensions(app):
     """Register Flask extensions."""
     csrf_protect.init_app(app)
     cors.init_app(app)
+    toastr.init_app(app)
 
 
 def register_blueprints(app):

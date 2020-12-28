@@ -5,7 +5,7 @@ from functools import reduce
 
 import folium
 import numpy as np
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from folium import LatLngPopup
 from neomodel import Q
 
@@ -65,13 +65,15 @@ def index():
 
         start_street = start_street.lower().replace('ул.', 'улица').replace('пр-т', 'проспект')
         finish_street = finish_street.lower().replace('ул.', 'улица').replace('пр-т', 'проспект')
+        try:
+            start_building = Building.find_by_adress(street=start_street, number=start_number)
+            start_node = WayNode.match(lat=start_building.lat, lon=start_building.lon)
 
-        start_building = Building.find_by_adress(street=start_street, number=start_number)
-        start_node = WayNode.match(lat=start_building.lat, lon=start_building.lon)
-
-        finish_building = Building.find_by_adress(street=finish_street, number=finish_number)
-        finish_node = WayNode.match(lat=finish_building.lat, lon=finish_building.lon)
-
+            finish_building = Building.find_by_adress(street=finish_street, number=finish_number)
+            finish_node = WayNode.match(lat=finish_building.lat, lon=finish_building.lon)
+        except IndexError:
+            flash("All BAD")
+            return redirect(url_for("traffic.data"))
         k=5
         paths, distances = WayNode.kShortestPaths(id0=start_node.id, id1=finish_node.id, k=k)
         L = np.max([len(distance) for distance in distances])
