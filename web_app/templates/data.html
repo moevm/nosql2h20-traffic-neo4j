@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="col-ld-2 ml-5">
-    <form method="POST" action="">
+    <form method="POST" action="/data">
+        {{ form.csrf_token }}
         <div class="form-group row text-center">
             <div class="col-ld-2 mr-2">
                 <label>first corner</label>
@@ -62,10 +63,69 @@
                 </div>
             </div>
         </div>
+        <div class="form-group row text-center">
+            <div class="col-ld-2 mr-2">
+                <label>first id</label>
+                <div class="form-group">
+                {% if form.node_id1.errors %}
+                    {{ form.node_id1(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.node_id1.errors %}
+                            <span>{{ error }}</span>
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.node_id1(class="form-control", placeholder="first id") }}
+                {% endif %}
+                </div>
+            </div>
+            <div class="col-ld-2">
+                <label>last id</label>
+                <div class="form-group">
+                {% if form.node_id2.errors %}
+                    {{ form.node_id2(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.node_id2.errors %}
+                            <span>{{ error }}</span>
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.node_id2(class="form-control", placeholder="last id") }}
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Building parameters</label>
+            <div class="row">
+                {{ form.housenumber(class="form-control", placeholder="House number") }}
+                {{ form.street(class="form-control", placeholder="Street name") }}
+            </div>
+        </div>
         <div class="form-group">
             <div class="row">
                 {{ form.label(class="btn btn-outline-primary btn-block") }}
                 {{ form.filter(class="btn btn-primary btn-block") }}
+            </div>
+        </div>
+    </form>
+    <form method="POST" action="/import" enctype="multipart/form-data">
+        {{ import_form.csrf_token }}
+        <div class="form-group">
+            <label>Database Import</label>
+            <div class="row" >
+                {{ import_form.Import(class="form-control-file") }}
+                <input type="submit" value="import" class="btn btn-primary btn-block"/>
+            </div>
+        </div>
+    </form>
+    <form method="POST" action="/export">
+        <div class="form-group">
+            <label>Database Export</label>
+            <div class="row" >
+                {{ export_form.Export(class="btn btn-primary btn-block") }}
             </div>
         </div>
     </form>

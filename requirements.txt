@@ -28,3 +28,7 @@ neomodel==4.0.1
 py2neo~=2020.1.1
 folium==0.11.0
 Flask-Toastr==0.5.4
+
+numpy~=1.19.5
+docker~=4.4.4
+Werkzeug~=1.0.1

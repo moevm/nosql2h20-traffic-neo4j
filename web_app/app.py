@@ -24,6 +24,7 @@ def create_app(config_object="web_app.settings"):
     app = Flask(__name__.split(".")[0])
     app.config.from_object(config_object)
     app.config['SECRET_KEY'] = os.urandom(32)
+    app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads/')
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
