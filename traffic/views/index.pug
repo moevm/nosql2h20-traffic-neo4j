@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  script(src="javascripts/scripts.js")
+
+  div.modal(id="import")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          h3.modal-title IMPORT
+          a(href="" title="close").close x
+        div.modal-body
+          form(enctype="multipart/form-data", method=post)
+            input.input(placeholder="CHOOSE FILE", type="file")
+            button.button(type="submit") IMPORT
+
+  div.modal(id="export")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          h3.modal-title EXPORT
+          a(href="" title="close").close x
+        div.modal-body
+          form(enctype="multipart/form-data", method=post)
+            input.input(placeholder="CHOOSE FILE", type="file")
+            button.button(type="submit") EXPORT
+
+  div.interface_block
+    div.input_block
+      input.input(placeholder="from")
+      input.input(placeholder="to")
+      div.input_buttons
+        form(action="/statistics")
+          button.button(type="submit") INFO
+        button.button(onclick="go();") GO
+    div.export_buttons
+      form(action="#import")
+        button.button IMPORT
+      form(action="#export")
+        button.button EXPORT
+
+  div.map_block
+    script(src="javascripts/OpenLayers-2.13.1/OpenLayers.js")
+
+    div.map(id="map")
+    script(src="javascripts/Map.js")
